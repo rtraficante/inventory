@@ -2,8 +2,10 @@ import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
-
 import { auth, requiresAuth } from "express-openid-connect";
+
+// Routes
+import authRouter from "./auth/user";
 
 dotenv.config();
 
@@ -26,9 +28,11 @@ app.use(
     baseURL: process.env.BASE_URL,
     clientID: process.env.CLIENT_ID,
     secret: process.env.SECRET,
-    // idpLogout: true,
+    idpLogout: true,
   })
 );
+
+app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged Out");

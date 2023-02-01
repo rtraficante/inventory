@@ -23,12 +23,9 @@ model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  firstName String
-  lastName  String
   email     String
-  password  String
-  company   Company  @relation(fields: [companyId], references: [id])
-  companyId Int
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId Int?
 }
 
 model Product {
