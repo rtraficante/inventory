@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/hook", async (req: Request, res: Response) => {
   const { email, secret } = req.body;
+  console.log(req);
   console.log("yayaya", req.body);
 
   if (secret !== process.env.AUTH0_HOOK_SECRET) {
@@ -25,18 +26,16 @@ router.post("/hook", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/login", async (req: Request, res: Response) => {
-  const { email } = JSON.parse(req.body);
-
+router.get("/me", async (req: Request, res: Response) => {
   try {
     const user = await db.user.findFirst({
       where: {
-        email,
+        email: req.oidc.user?.email,
       },
     });
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    return res.status(500).json(err.message);
   }
 });
 

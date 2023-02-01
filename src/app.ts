@@ -2,10 +2,11 @@ import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import { auth, requiresAuth } from "express-openid-connect";
+import { auth } from "express-openid-connect";
 
 // Routes
 import authRouter from "./auth/user";
+import apiRouter from "./api";
 
 dotenv.config();
 
@@ -33,13 +34,10 @@ app.use(
 );
 
 app.use("/auth", authRouter);
+app.use("/api", apiRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged Out");
-});
-
-app.get("/profile", requiresAuth(), (req: Request, res: Response) => {
-  res.send(JSON.stringify(req.oidc.user));
 });
 
 app.listen(PORT, () => console.log(`Server is listening on port: ${PORT}`));
