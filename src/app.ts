@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import { auth } from "express-openid-connect";
 
 // Routes
 import authRouter from "./auth/user";
