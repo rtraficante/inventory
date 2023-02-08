@@ -35,6 +35,19 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const company = await db.company.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+    return res.status(200).json(company);
+  } catch (err: any) {
+    return res.status(500).json(err.message);
+  }
+});
+
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { name } = req.body;

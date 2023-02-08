@@ -1,15 +1,14 @@
 import express from "express";
 import type { Request, Response } from "express";
-import { requiresAuth } from "express-openid-connect";
 import { db } from "../utils/db";
 
 const router = express.Router();
 
-router.get("/", requiresAuth(), async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const user = await db.user.findFirst({
       where: {
-        email: req.oidc.user?.email,
+        email: req.headers.userEmail as string,
       },
       include: {
         company: {
